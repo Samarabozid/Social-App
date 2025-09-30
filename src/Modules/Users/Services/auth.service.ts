@@ -54,14 +54,17 @@ class AuthService {
 
     confirmEmail = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { email, OTPS }: Partial<IUser> = req.body;
-
-            // validate input
-            if (!email || !OTPS?.[0]?.value) {
+            const { email, OTPS }: { email?: string; OTPS?: string | { value: string }[] } = req.body;
+    
+            // Normalize OTP value
+            const otpValue = typeof OTPS === 'string' ? OTPS : OTPS?.[0]?.value;
+    
+            // Validate input
+            if (!email || !otpValue) {
                 return res.status(400).json({ message: "Email and OTP are required" });
             }
-
-            // fetch user with OTPS field
+    
+            // Fetch user with OTPS field
             const user = await this.userRepo.findOneDocument({ email }, "email OTPS");
             if (!user) {
                 return res.status(404).json({
@@ -69,28 +72,25 @@ class AuthService {
                     data: { invalidEmail: email }
                 });
             }
-
+    
             if (!user.OTPS?.[0]?.value) {
                 return res.status(400).json({ message: "No OTP stored for this user" });
             }
-
-            // compare OTPs
-            const isOTPMatched = compareHash(
-                OTPS[0].value,
-                user.OTPS[0].value
-            );
-
+    
+            // Compare OTPs
+            const isOTPMatched = compareHash(otpValue, user.OTPS[0].value);
             if (!isOTPMatched) {
                 return res.status(401).json({
                     message: "Invalid OTP",
-                    data: { invalidOTP: OTPS }
+                    data: { invalidOTP: otpValue }
                 });
             }
-
-            // clear OTP after successful verification
+    
+            // Clear OTP after successful verification
+            user.isVerified = true;
             user.OTPS = [];
             await user.save();
-
+    
             return res.status(200).json({
                 message: "Email confirmed successfully",
                 data: { user }
@@ -99,7 +99,7 @@ class AuthService {
             console.error(err);
             return res.status(500).json({ message: "Internal server error" });
         }
-    }
+    };
 
     signIn = async (req: Request, res: Response, next: NextFunction) => {
         const { email, password } = req.body;

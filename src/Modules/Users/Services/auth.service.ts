@@ -10,6 +10,7 @@ import { generateToken } from "../../../Utils/Services/token.utils.js";
 import { SignOptions } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { ConflictException } from "../../../Utils/Errors/excpetions.utils.js";
+import { SuccessResponse } from "../../../Utils/Response/response-helper.utils.js";
 
 class AuthService {
 
@@ -52,7 +53,9 @@ class AuthService {
             firstName, lastName, email, password: hashedPassword, age, gender, DOB, phoneNumber: encryptedPhoneNumber, OTPS: [confirmOTP]
         })
 
-        return res.status(201).json({ message: "User created successfully", data: { newUser } });
+        //return res.status(201).json({ message: "User created successfully", data: { newUser } });
+        return res.status(201).json(SuccessResponse<IUser>('User created successfully',201,newUser));
+
     }
 
     confirmEmail = async (req: Request, res: Response, next: NextFunction) => {

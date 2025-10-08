@@ -7,8 +7,7 @@ import { UserModel } from "../DB/Models/user.model.js"
 import { BlackListedTokenRepository } from "../DB/Repositories/black-listed.repository.js";
 import { BlackListedTokensModel } from "../DB/Models/index.js";
 import process from "process";
-import { HttpException } from "../Utils/index.js";
-import {BadRequestException} from "../Utils/Errors/excpetions.utils.js"
+import { BadRequestException } from "../Utils/Errors/excpetions.utils.js"
 
 const userRepo = new UserRepository(UserModel)
 const blackListedTokenRepo = new BlackListedTokenRepository(BlackListedTokensModel)

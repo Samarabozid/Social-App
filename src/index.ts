@@ -4,6 +4,7 @@ import * as controllers from "./Modules/controllers.index.js";
 import { dbConnection } from "./DB/db.connection.js";
 import { NextFunction, Request, Response } from "express";
 import { HttpException } from './Utils/index.js';
+import { FailedResponse } from './Utils/Response/response-helper.utils.js';
 
 const app = express();
 app.use(express.json());
@@ -19,9 +20,9 @@ app.use('/api/reacts', controllers.reactsController);
 app.use((err:HttpException | Error | null, req: Request, res: Response, next: NextFunction) => {
     if(err) {
         if(err instanceof HttpException){
-            return res.status( err.statusCode).json({ message:err.message, error:err.error });
+             res.status( err.statusCode).json(FailedResponse(err.message,err.statusCode,err.error))
         }else{
-            return res.status(500).json({ message: 'Something went wrong!', error:err });
+             res.status(500).json(FailedResponse('Something went wrong!',500,err));
         }
     }
 });

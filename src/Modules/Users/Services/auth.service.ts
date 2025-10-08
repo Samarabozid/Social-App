@@ -9,6 +9,7 @@ import { BlackListedTokensModel } from "../../../DB/Models/index.js";
 import { generateToken } from "../../../Utils/Services/token.utils.js";
 import { SignOptions } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
+import { ConflictException } from "../../../Utils/Errors/excpetions.utils.js";
 
 class AuthService {
 
@@ -21,7 +22,9 @@ class AuthService {
         const isEmailExist = await this.userRepo.findOneDocument({ email }, "email");
 
         if (isEmailExist) {
-            return res.status(409).json({ message: "Email already exist", data: { invalidEmail: email } });
+           // return res.status(409).json({ message: "Email already exist", data: { invalidEmail: email } });
+        
+           throw new ConflictException('Email already exist', { invalidEmail: email })
         }
 
         // Encrypt phone number

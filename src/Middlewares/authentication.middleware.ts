@@ -7,6 +7,8 @@ import { UserModel } from "../DB/Models/user.model.js"
 import { BlackListedTokenRepository } from "../DB/Repositories/black-listed.repository.js";
 import { BlackListedTokensModel } from "../DB/Models/index.js";
 import process from "process";
+import { HttpException } from "../Utils/index.js";
+import {BadRequestException} from "../Utils/Errors/excpetions.utils.js"
 
 const userRepo = new UserRepository(UserModel)
 const blackListedTokenRepo = new BlackListedTokenRepository(BlackListedTokensModel)
@@ -15,7 +17,7 @@ export const authenticationMiddleware = async (req: Request, res: Response, next
 
     const { authorization: accessToken } = req.headers;
 
-    if (!accessToken) return res.status(401).json({ message: "PLease Login First" })
+    if (!accessToken) throw next(new BadRequestException('Please Login First'))
 
     const [prefix, token] = accessToken.split(' ')
     if (prefix !== process.env.JWT_PREFIX) return res.status(401).json({ message: "Invalid Token" })

@@ -16,4 +16,7 @@ profileController.post("/upload-profile-picture",authenticationMiddleware,Multer
 
 // list all users
 
+// renew signed url
+profileController.post("/renew-signed-url",authenticationMiddleware,ProfileService.renewSignedUrl)
+
 export {profileController}

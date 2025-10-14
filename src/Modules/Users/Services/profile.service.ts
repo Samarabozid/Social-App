@@ -20,6 +20,18 @@ export class ProfileService {
         res.json(SuccessResponse<unknown>("Profile picture uploaded successfully", 200, {key, url}))
     }
 
+
+    renewSignedUrl = async (req: Request, res: Response) => {
+        const { user} = (req as unknown as IRequest).loggedInUser
+        const {key, keyType}: {key: string, keyType: 'profilePicture' | 'coverPicture'} = req.body
+
+        if (user[keyType] !== key) throw new BadRequestException("Invalid Key")
+
+        const url = await this.s3Clients.getFileWithSignedUrl(key)
+
+        res.json(SuccessResponse<unknown>("Signed url renewed successfully", 200, {key,url}))
+    }
+
 }
 
 export default new ProfileService()

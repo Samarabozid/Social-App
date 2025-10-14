@@ -1,6 +1,6 @@
-import nodemailer from 'nodemailer';
+import * as nodemailer from 'nodemailer';
 import { EventEmitter } from "node:events";
-import { IEmail } from "../../Common/Interfaces/user.interface.js";
+import { IEmail } from "../../Common/Interfaces/user.interface";
 
 export const sendEmail = async ({
     to, cc, subject, content, attachments = []

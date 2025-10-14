@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { IRequest, IUser } from "../../../Common/index.js";
-import { UserRepository } from "../../../DB/Repositories/user.repository.js";
-import { UserModel } from "../../../DB/Models/user.model.js";
-import { compareHash, encrypt, generateHash, localEmitter } from "../../../Utils/index.js";
-import { OTPTypesEnum } from "../../../Common/Enums/user.enum.js";
-import { BlackListedTokenRepository } from "../../../DB/Repositories/black-listed.repository.js";
-import { BlackListedTokensModel } from "../../../DB/Models/index.js";
-import { generateToken } from "../../../Utils/Services/token.utils.js";
+import { IRequest, IUser } from "../../../Common/index";
+import { UserRepository } from "../../../DB/Repositories/user.repository";
+import { UserModel } from "../../../DB/Models/user.model";
+import { compareHash, encrypt, generateHash, localEmitter } from "../../../Utils/index";
+import { OTPTypesEnum } from "../../../Common/Enums/user.enum";
+import { BlackListedTokenRepository } from "../../../DB/Repositories/black-listed.repository";
+import { BlackListedTokensModel } from "../../../DB/Models/index";
+import { generateToken } from "../../../Utils/Services/token.utils";
 import { SignOptions } from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
-import { ConflictException } from "../../../Utils/Errors/excpetions.utils.js";
-import { SuccessResponse } from "../../../Utils/Response/response-helper.utils.js";
+import { v4 as uuidv4 } from "uuid"
+import { ConflictException } from "../../../Utils/Errors/excpetions.utils";
+import { SuccessResponse } from "../../../Utils/Response/response-helper.utils";
 
 class AuthService {
 

@@ -1,4 +1,4 @@
-import crypto from "node:crypto";
+import * as crypto from "node:crypto";
 
 // Symmetric Encryption
 const IV_LENGTH = parseInt(process.env.IV_LENGTH as string);

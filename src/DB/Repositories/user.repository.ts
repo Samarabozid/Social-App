@@ -1,5 +1,5 @@
-import { BaseRepository } from "./base.repository.js";
-import { IUser } from "../../Common/index.js";
+import { BaseRepository } from "./base.repository";
+import { IUser } from "../../Common/index";
 import { Model } from "mongoose";
 
 
@@ -14,4 +14,4 @@ export class UserRepository extends BaseRepository<IUser> {
 
     
 
-} 
+}  

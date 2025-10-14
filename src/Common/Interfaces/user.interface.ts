@@ -1,4 +1,4 @@
-import { GenderEnum, ProviderEnum, RoleEnum, OTPTypesEnum } from "../Enums/user.enum.js";
+import { GenderEnum, ProviderEnum, RoleEnum, OTPTypesEnum } from "../Enums/user.enum";
 import { Document } from "mongoose";
 import { JwtPayload } from "jsonwebtoken";
 

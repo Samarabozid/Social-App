@@ -1,4 +1,4 @@
-import { IFailureReponse, ISuccessReponse } from "../../Common/index.js"
+import { IFailureReponse, ISuccessReponse } from "../../Common/index"
 
 
 export function SuccessResponse<T>(

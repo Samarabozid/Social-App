@@ -1,2 +1,2 @@
-export * from "./user.model.js";
-export * from "./black-listed-tokens.js";
+export * from "./user.model";
+export * from "./black-listed-tokens";

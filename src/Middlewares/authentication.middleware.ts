@@ -1,13 +1,13 @@
 import { NextFunction, Response, Request} from "express";
-import { verifyToken } from "../Utils/Services/token.utils.js";
-import { IUser, IRequest } from "../Common/index.js";
-import { UserRepository } from "../DB/Repositories/user.repository.js";
+import { verifyToken } from "../Utils/Services/token.utils";
+import { IUser, IRequest } from "../Common/index";
+import { UserRepository } from "../DB/Repositories/user.repository";
 import { JwtPayload } from "jsonwebtoken";
-import { UserModel } from "../DB/Models/user.model.js"
-import { BlackListedTokenRepository } from "../DB/Repositories/black-listed.repository.js";
-import { BlackListedTokensModel } from "../DB/Models/index.js";
-import process from "process";
-import { BadRequestException } from "../Utils/Errors/excpetions.utils.js"
+import { UserModel } from "../DB/Models/user.model"
+import { BlackListedTokenRepository } from "../DB/Repositories/black-listed.repository";
+import { BlackListedTokensModel } from "../DB/Models/index";
+import * as process from "process";
+import { BadRequestException } from "../Utils/Errors/excpetions.utils"
 
 const userRepo = new UserRepository(UserModel)
 const blackListedTokenRepo = new BlackListedTokenRepository(BlackListedTokensModel)

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IBlackListedToken } from "../../Common/index.js";
+import { IBlackListedToken } from "../../Common/index";
 
 const blackListedTokensSchema = new mongoose.Schema<IBlackListedToken>({
     tokenId: {

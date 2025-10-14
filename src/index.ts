@@ -1,10 +1,10 @@
 import 'dotenv/config'
-import express from "express";
-import * as controllers from "./Modules/controllers.index.js";
-import { dbConnection } from "./DB/db.connection.js";
+import * as express from "express";
+import * as controllers from "./Modules/controllers.index";
+import { dbConnection } from "./DB/db.connection";
 import { NextFunction, Request, Response } from "express";
-import { HttpException } from './Utils/index.js';
-import { FailedResponse } from './Utils/Response/response-helper.utils.js';
+import { HttpException } from './Utils/index';
+import { FailedResponse } from './Utils/Response/response-helper.utils';
 
 const app = express();
 app.use(express.json());

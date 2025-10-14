@@ -1,4 +1,6 @@
-import jwt ,{ JwtPayload, Secret, SignOptions, VerifyOptions } from "jsonwebtoken";
+import { JwtPayload, Secret, SignOptions, VerifyOptions } from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
+
 
 // Generate token
 export const generateToken = (

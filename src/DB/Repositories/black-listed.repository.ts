@@ -1,6 +1,6 @@
-import { BaseRepository } from "./base.repository.js";
+import { BaseRepository } from "./base.repository";
 import { Model } from "mongoose";
-import { IBlackListedToken } from "../../Common/index.js";
+import { IBlackListedToken } from "../../Common/index";
 
 
 export class BlackListedTokenRepository extends BaseRepository<IBlackListedToken>{

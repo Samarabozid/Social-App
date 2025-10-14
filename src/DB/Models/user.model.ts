@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { GenderEnum, ProviderEnum, RoleEnum, IUser, OTPTypesEnum } from "../../Common/index.js";
+import { GenderEnum, ProviderEnum, RoleEnum, IUser, OTPTypesEnum } from "../../Common/index";
 
 const userSchema = new mongoose.Schema<IUser>({
     firstName: {

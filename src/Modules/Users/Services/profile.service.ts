@@ -16,12 +16,15 @@ export class ProfileService {
         const { user} = (req as unknown as IRequest).loggedInUser
         if (!file) throw new BadRequestException("Please upload a file")
 
-        const {key , url} = await this.s3Clients.uploadFileOnS3(file, `${user._id}/profile`)
+        //const {key , url} = await this.s3Clients.uploadFileOnS3(file, `${user._id}/profile`)
+        const uploaded = await this.s3Clients.uploadLargeFileOnS3(file, `${user._id}/profile`)
 
-        user.profilePicture = key
-        await user.save()
+        //user.profilePicture = key
+        //await user.save()
 
-        res.json(SuccessResponse<unknown>("Profile picture uploaded successfully", 200, {key, url}))
+        //res.json(SuccessResponse<unknown>("Profile picture uploaded successfully", 200, {key, url}))
+        res.json(SuccessResponse<unknown>("Profile picture uploaded successfully", 200, uploaded))
+
     }
 
 

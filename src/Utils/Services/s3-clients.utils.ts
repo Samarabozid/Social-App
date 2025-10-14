@@ -2,6 +2,7 @@ import { S3Client, PutObjectCommand, PutObjectCommandInput, GetObjectCommand, De
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { ReadStream } from "fs";
 import * as fs from 'node:fs';
+import { Upload } from "@aws-sdk/lib-storage";
 
 interface IPutObjectCommandInput extends PutObjectCommandInput {
     Body: string | Buffer | ReadStream;
@@ -73,4 +74,28 @@ export class S3ClientService {
 
         return await this.s3Client.send(deleteCommand);
     }
+
+    async uploadLargeFileOnS3(file: Express.Multer.File, key: string) {
+        const keyName = `${this.key_folder}/${key}/${Date.now()}-${file.originalname}`;
+        const params: IPutObjectCommandInput = {
+            Bucket: process.env.AWS_BUCKET_NAME as string,
+            Key: keyName,
+            Body: fs.createReadStream(file.path),
+            ContentType: file.mimetype
+        };
+      
+        const upload = new Upload({
+          client: this.s3Client,
+          params,
+          queueSize: 4,       // how many parts to upload in parallel
+          partSize: 5 * 1024 * 1024, // each part = 5 MB
+          leavePartsOnError: false, // auto-cleanup failed parts
+        });
+      
+        upload.on("httpUploadProgress", (progress) => {
+          console.log(`Uploaded ${progress.loaded} bytes of ${progress.total}`);
+        });
+      
+        return await upload.done();
+      }
 }

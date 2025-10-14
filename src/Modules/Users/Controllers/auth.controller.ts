@@ -1,11 +1,13 @@
 import { Router } from "express";
 import AuthService from "../Services/auth.service";
 import { authenticationMiddleware } from "../../../Middlewares/index";
+import { validationMiddleware } from "../../../Middlewares/validation.middleware";
+import { signUpValidator } from "../../../Validators/User/auth.validator";
 const authController = Router();
 
 
 //signup
-authController.post("/signup", AuthService.signUp);
+authController.post("/signup", validationMiddleware(signUpValidator), AuthService.signUp);
 //signin
 authController.post("/signin", AuthService.signIn);
 

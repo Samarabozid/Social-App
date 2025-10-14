@@ -7,6 +7,7 @@ const profileController = Router();
 // update profile
 
 // delete profile
+profileController.delete("/delete-account",authenticationMiddleware,ProfileService.deleteAccount)
 
 // get profile data
 

@@ -18,6 +18,9 @@ export abstract class BaseRepository<T> {
         return await this.model.findById(id, projection, options)
     }
 
+    async findByIdAndDeleteDocument(id: mongoose.Schema.Types.ObjectId){
+        return await this.model.findByIdAndDelete(id)
+    }
 
     updateOneDocument(document: T){}
 
@@ -27,7 +30,7 @@ export abstract class BaseRepository<T> {
 
     findAndUpdateDocument(document: T){}
 
-    findAndDeleteDocument(document: T){}
+    
 
     findDocuments(query: T){}
 

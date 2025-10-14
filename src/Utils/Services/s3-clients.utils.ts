@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, PutObjectCommandInput, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, PutObjectCommandInput, GetObjectCommand, DeleteObjectCommand, DeleteObjectsCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { ReadStream } from "fs";
 import * as fs from 'node:fs';
@@ -52,5 +52,25 @@ export class S3ClientService {
             key: keyName,
             url: signedUrl
         };
+    }
+
+    async deleteFileFromS3(key: string) {
+        const deleteCommand = new DeleteObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME as string,
+            Key: key
+        });
+
+        return await this.s3Client.send(deleteCommand);
+    }
+
+    async deleteBulkFilesFromS3(keys: string[]) {
+        const deleteCommand = new DeleteObjectsCommand({
+            Bucket: process.env.AWS_BUCKET_NAME as string,
+            Delete: {
+                Objects: keys.map(key => ({ Key: key }))
+            } 
+        });
+
+        return await this.s3Client.send(deleteCommand);
     }
 }

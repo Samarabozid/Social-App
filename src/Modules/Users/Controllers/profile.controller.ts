@@ -11,12 +11,14 @@ profileController.put("/update-profile/:_id",ProfileService.updateProfile)
 profileController.delete("/delete-account",authenticationMiddleware,ProfileService.deleteAccount)
 
 // get profile data
+profileController.get("/get-profile/:_id",ProfileService.getProfile)
 
 // upload profile picture
 profileController.post("/upload-profile-picture",authenticationMiddleware,MulterMiddleware().single("profilePicture"),ProfileService.uploadProfilePicture)
 // upload cover picture
 
 // list all users
+profileController.get("/list-users",ProfileService.listUsers)
 
 // renew signed url
 profileController.post("/renew-signed-url",authenticationMiddleware,ProfileService.renewSignedUrl)

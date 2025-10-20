@@ -49,23 +49,42 @@ export class ProfileService {
     }
 
     updateProfile = async (req: Request, res: Response) => {
-       // const { user: { _id } } = (req as unknown as IRequest).loggedInUser
+        // const { user: { _id } } = (req as unknown as IRequest).loggedInUser
         const { firstName, lastName, email, password, gender, phoneNumber }: IUser = req.body
 
+        // const user = await this.userRepository.findDocumentById(req.params._id as unknown as mongoose.Schema.Types.ObjectId)
+        // if (!user) throw new BadRequestException("User not found")
+
+        // if (firstName) user.firstName = firstName
+        // if (lastName) user.lastName = lastName
+        // if (email) user.email = email
+        // if (password) user.password = password
+        // if (gender) user.gender = gender
+        // if (phoneNumber) user.phoneNumber = phoneNumber
+
+        // await user.save()
+
+        // res.json(SuccessResponse<unknown>("Profile updated successfully", 200, user))
+
+        await this.userRepository.updateOneDocument(
+            { _id: req.params._id , email },
+            { $set: { firstName, lastName, password, gender, phoneNumber } },
+            { new: true }
+        )
+
+        res.json(SuccessResponse<unknown>("Profile updated successfully", 200))
+    }
+
+    getProfile = async (req: Request, res: Response) => {
         const user = await this.userRepository.findDocumentById(req.params._id as unknown as mongoose.Schema.Types.ObjectId)
         if (!user) throw new BadRequestException("User not found")
+        res.json(SuccessResponse<unknown>("Profile fetched successfully", 200, user))
+    }
 
-        if (firstName) user.firstName = firstName
-        if (lastName) user.lastName = lastName
-        if (email) user.email = email
-        if (password) user.password = password
-        if (gender) user.gender = gender
-        if (phoneNumber) user.phoneNumber = phoneNumber
 
-        await user.save()
-
-        res.json(SuccessResponse<unknown>("Profile updated successfully", 200, user))
-
+    listUsers = async (req: Request, res: Response) => {
+        const users = await this.userRepository.findDocuments()
+        res.json(SuccessResponse<IUser[]>("Users fetched successfully", 200, users))
     }
 }
 

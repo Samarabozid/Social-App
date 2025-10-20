@@ -9,7 +9,7 @@ export const signUpValidator = {
         email: z.email(),
         password: z.string(),
         gender: z.enum(GenderEnum),
-        DOB: z.date(),
+        //DOB: z.date(),
         phoneNumber: z.string().min(11).max(11)
     })
 }

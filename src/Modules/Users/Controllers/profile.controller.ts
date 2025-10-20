@@ -5,6 +5,7 @@ import { authenticationMiddleware } from "../../../Middlewares/authentication.mi
 const profileController = Router();
 
 // update profile
+profileController.put("/update-profile/:_id",ProfileService.updateProfile)
 
 // delete profile
 profileController.delete("/delete-account",authenticationMiddleware,ProfileService.deleteAccount)

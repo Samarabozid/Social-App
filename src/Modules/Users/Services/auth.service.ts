@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { IRequest, IUser } from "../../../Common/index";
+import { IRequest, IUser, SignUpBodyType } from "../../../Common/index";
 import { UserRepository } from "../../../DB/Repositories/user.repository";
 import { UserModel } from "../../../DB/Models/user.model";
 import { compareHash, encrypt, generateHash, localEmitter } from "../../../Utils/index";
@@ -18,7 +18,8 @@ class AuthService {
     private blackListedTokenRepo: BlackListedTokenRepository = new BlackListedTokenRepository(BlackListedTokensModel);
 
     signUp = async (req: Request, res: Response, next: NextFunction) => {
-        const { firstName, lastName, email, password, age, gender, DOB, phoneNumber }: Partial<IUser> = req.body;
+        //const {firstName,lastName,email,password,gender,DOB,phoneNumber}: SignUpBodyType = req.body;
+        const {firstName,lastName,email,password,gender,phoneNumber}: SignUpBodyType = req.body;
 
         const isEmailExist = await this.userRepo.findOneDocument({ email }, "email");
 
@@ -27,12 +28,6 @@ class AuthService {
         
            throw new ConflictException('Email already exist', { invalidEmail: email })
         }
-
-        // Encrypt phone number
-        const encryptedPhoneNumber = encrypt(phoneNumber as string);
-
-        // Generate hash password
-        const hashedPassword = generateHash(password as string);
 
         // Send OTP
         const otp = Math.floor(100000 + Math.random() * 100000).toString();
@@ -50,7 +45,9 @@ class AuthService {
 
 
         const newUser = await this.userRepo.createNewDocument({
-            firstName, lastName, email, password: hashedPassword, age, gender, DOB, phoneNumber: encryptedPhoneNumber, OTPS: [confirmOTP]
+           // firstName, lastName, email, password: hashedPassword, gender, DOB, phoneNumber: encryptedPhoneNumber, OTPS: [confirmOTP]
+            firstName, lastName, email, password, gender, phoneNumber, OTPS: [confirmOTP]
+
         })
 
         //return res.status(201).json({ message: "User created successfully", data: { newUser } });

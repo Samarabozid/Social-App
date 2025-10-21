@@ -18,6 +18,7 @@ app.use('/api/reacts', controllers.reactsController);
 
 // error handling middleware
 app.use((err:HttpException | Error | null, req: Request, res: Response, next: NextFunction) => {
+    console.log(err)
     if(err) {
         if(err instanceof HttpException){
              res.status( err.statusCode).json(FailedResponse(err.message,err.statusCode,err.error))

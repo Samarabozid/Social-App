@@ -10,6 +10,7 @@ export const signUpValidator = {
         password: z.string(),
         gender: z.enum(GenderEnum),
         //DOB: z.date(),
+        DOB: z.preprocess((val) => (val ? new Date(val as string) : undefined), z.date()),
         phoneNumber: z.string().min(11).max(11)
     })
 }

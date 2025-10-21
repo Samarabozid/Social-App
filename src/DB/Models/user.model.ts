@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { GenderEnum, ProviderEnum, RoleEnum, IUser, OTPTypesEnum } from "../../Common/index";
-import { decrypt, encrypt, generateHash } from "../../Utils";
+import { decrypt, encrypt, generateHash, S3ClientService } from "../../Utils";
 
 const userSchema = new mongoose.Schema<IUser>({
     firstName: {
@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema<IUser>({
         enum: GenderEnum,
         default: GenderEnum.OTHER
     },
-    //DOB: Date,
+    DOB: Date,
     profilePicture: String,
     coverPicture: String,
     provider: {
@@ -93,16 +93,43 @@ userSchema.pre(["findOne", "findOneAndUpdate"], function () {
     console.log(this.getOptions());
 })
 
+// userSchema.post(/^find/, function (doc) {
+//     console.log(Object.keys(this));
+//     if ((this as unknown as { op: string }).op == 'find') {
+//         doc.forEach((user: IUser) => {
+//             if(user.phoneNumber){
+//                 user.phoneNumber = decrypt(user.phoneNumber as string)
+//             }
+//         })
+//     } else { 
+//         doc.phoneNumber = decrypt(doc.phoneNumber as string)
+//     }
+// })
+
 userSchema.post(/^find/, function (doc) {
-    console.log(Object.keys(this));
-    if ((this as unknown as { op: string }).op == 'find') {
-        doc.forEach((user: IUser) => {
-            if(user.phoneNumber){
-                user.phoneNumber = decrypt(user.phoneNumber as string)
+    if (!doc) return; // ✅ Skip if nothing was found
+    const op = (this as unknown as { op: string }).op;
+    if (op === 'find') {
+        // when it's an array of users
+        (doc as IUser[]).forEach((user) => {
+            if (user.phoneNumber) {
+                user.phoneNumber = decrypt(user.phoneNumber as string);
             }
-        })
+        });
     } else {
-        doc.phoneNumber = decrypt(doc.phoneNumber as string)
+        // when it's a single user
+        const user = doc as IUser;
+        if (user.phoneNumber) {
+            user.phoneNumber = decrypt(user.phoneNumber as string);
+        }
+    }
+});
+
+
+const s3Service = new S3ClientService()
+userSchema.post("findOneAndDelete", async function (doc) {
+    if(doc.profilePicture){
+        await s3Service.deleteFileFromS3(doc.profilePicture)
     }
 })
 const UserModel = mongoose.model<IUser>("User", userSchema);

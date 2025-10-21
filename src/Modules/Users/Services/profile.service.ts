@@ -16,14 +16,14 @@ export class ProfileService {
         const { user } = (req as unknown as IRequest).loggedInUser
         if (!file) throw new BadRequestException("Please upload a file")
 
-        //const {key , url} = await this.s3Clients.uploadFileOnS3(file, `${user._id}/profile`)
-        const uploaded = await this.s3Clients.uploadLargeFileOnS3(file, `${user._id}/profile`)
+        const {key , url} = await this.s3Clients.uploadFileOnS3(file, `${user._id}/profile`)
+        //const uploaded = await this.s3Clients.uploadLargeFileOnS3(file, `${user._id}/profile`)
 
-        //user.profilePicture = key
-        //await user.save()
+        user.profilePicture = key
+        await user.save()
 
-        //res.json(SuccessResponse<unknown>("Profile picture uploaded successfully", 200, {key, url}))
-        res.json(SuccessResponse<unknown>("Profile picture uploaded successfully", 200, uploaded))
+        res.json(SuccessResponse<unknown>("Profile picture uploaded successfully", 200, {key, url}))
+        //res.json(SuccessResponse<unknown>("Profile picture uploaded successfully", 200, uploaded))
 
     }
 
@@ -44,8 +44,10 @@ export class ProfileService {
         const deleteDocument = await this.userRepository.findByIdAndDeleteDocument(user._id as mongoose.Schema.Types.ObjectId)
 
         if (!deleteDocument) throw new BadRequestException("User not found")
-        const deleteResponse = await this.s3Clients.deleteFileFromS3(deleteDocument?.profilePicture as string)
-        res.json(SuccessResponse<unknown>("Account deleted successfully", 200, deleteResponse))
+        //const deleteResponse = await this.s3Clients.deleteFileFromS3(deleteDocument?.profilePicture as string)
+        //res.json(SuccessResponse<unknown>("Account deleted successfully", 200, deleteResponse))
+        res.json(SuccessResponse<unknown>("Account deleted successfully", 200))
+
     }
 
     updateProfile = async (req: Request, res: Response) => {

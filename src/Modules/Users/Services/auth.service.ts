@@ -18,8 +18,8 @@ class AuthService {
     private blackListedTokenRepo: BlackListedTokenRepository = new BlackListedTokenRepository(BlackListedTokensModel);
 
     signUp = async (req: Request, res: Response, next: NextFunction) => {
-        //const {firstName,lastName,email,password,gender,DOB,phoneNumber}: SignUpBodyType = req.body;
-        const {firstName,lastName,email,password,gender,phoneNumber}: SignUpBodyType = req.body;
+        const {firstName,lastName,email,password,gender,DOB,phoneNumber}: SignUpBodyType = req.body;
+        //const {firstName,lastName,email,password,gender,phoneNumber}: SignUpBodyType = req.body;
 
         const isEmailExist = await this.userRepo.findOneDocument({ email }, "email");
 
@@ -45,8 +45,8 @@ class AuthService {
 
 
         const newUser = await this.userRepo.createNewDocument({
-           // firstName, lastName, email, password: hashedPassword, gender, DOB, phoneNumber: encryptedPhoneNumber, OTPS: [confirmOTP]
-            firstName, lastName, email, password, gender, phoneNumber, OTPS: [confirmOTP]
+           firstName, lastName, email, password, gender, DOB, phoneNumber, OTPS: [confirmOTP]
+           // firstName, lastName, email, password, gender, phoneNumber, OTPS: [confirmOTP]
 
         })
 

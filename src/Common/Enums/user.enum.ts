@@ -20,4 +20,10 @@ enum OTPTypesEnum{
     
 }
 
-export {RoleEnum, GenderEnum, ProviderEnum, OTPTypesEnum}
+enum FriendshipStatusEnum{
+    PENDING = "pending",
+    ACCEPTED = "accepted",
+    REJECTED = "rejected"
+}
+
+export {RoleEnum, GenderEnum, ProviderEnum, OTPTypesEnum, FriendshipStatusEnum}

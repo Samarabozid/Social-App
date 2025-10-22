@@ -1,5 +1,5 @@
-import { GenderEnum, ProviderEnum, RoleEnum, OTPTypesEnum } from "../Enums/user.enum";
-import { Document } from "mongoose";
+import { GenderEnum, ProviderEnum, RoleEnum, OTPTypesEnum, FriendshipStatusEnum } from "../Enums/user.enum";
+import { Document, Types } from "mongoose";
 import { JwtPayload } from "jsonwebtoken";
 
 interface IOTP{
@@ -8,7 +8,7 @@ interface IOTP{
     type:OTPTypesEnum
 }
 
-interface IUser extends Document {
+interface IUser extends Document<Types.ObjectId> {
     firstName:string | undefined,
     lastName:string | undefined,
     email:string | undefined,
@@ -26,7 +26,7 @@ interface IUser extends Document {
     OTPS?:IOTP[]
 }
 
-interface IBlackListedToken extends Document {
+interface IBlackListedToken extends Document<Types.ObjectId> {
     tokenId: string,
     expiresAt: Date
 }
@@ -44,5 +44,11 @@ interface IRequest extends Request {
    loggedInUser: {user: IUser, token: JwtPayload}
 }
 
+interface IFriendship extends Document<Types.ObjectId>{
+    requestFromId:Types.ObjectId,
+    requestToId:Types.ObjectId,
+    status:FriendshipStatusEnum
+}
 
-export  type {IUser, IEmail, IOTP, IRequest, IBlackListedToken}
+
+export  type {IUser, IEmail, IOTP, IRequest, IBlackListedToken, IFriendship}

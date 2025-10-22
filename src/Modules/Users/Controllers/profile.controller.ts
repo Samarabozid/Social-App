@@ -23,4 +23,13 @@ profileController.get("/list-users",ProfileService.listUsers)
 // renew signed url
 profileController.post("/renew-signed-url",authenticationMiddleware,ProfileService.renewSignedUrl)
 
+// send friendship request
+profileController.post("/send-friendship-request",authenticationMiddleware,ProfileService.sendFriendshipRequest)
+
+// list friendship requests
+profileController.get("/list-friendship-requests",authenticationMiddleware,ProfileService.listFriendshipRequests)
+
+// respond to friendship request
+profileController.patch("/respond-to-friendship-request",authenticationMiddleware,ProfileService.respondToFriendshipRequest)
+
 export {profileController}
